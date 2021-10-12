@@ -1,5 +1,7 @@
 <?php 
     session_start();
+    $_SESSION['token']=bin2hex(random_bytes(32));
+    $_SESSION['token-expire']=time()+3600;
     include "include/functions.php";
     require "include/Captcha.php";
 ?>
@@ -35,8 +37,13 @@
                             <h3 class="panel-title text-center"><i class="fa fa-sign-in"></i>  Student Login</h3>
                         </div>
                         <div class="panel-body">
-                            
-                            <form method="post" action="<?=$_SERVER['PHP_SELF'];?>">
+                            <?php 
+                                if (isset($_SESSION['message'])) {
+                                    echo $_SESSION['message'];
+                                    unset($_SESSION['message']);
+                                }
+                            ?>
+                            <form method="post" action="<?=base_url('action.php');?>">
                                 <div class="form-group">
                                     <label>Email: <span class="text-danger">*</span></label>
                                     <input id="email" type="text" class="form-control" name="email" placeholder="Email">
@@ -60,7 +67,8 @@
                                     <input type="text" class="form-control" name="captcha-input">
                                 </div>
                                 <input type="hidden" name="token" value="<?=$_SESSION["token"]?>">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button name="btnStudentLogin" type="submit" class="btn btn-success">Submit</button>
+                                <button type="reset" class="btn btn-danger">Reset</button>
                             </form> 
                         </div>
                     </div>
