@@ -35,17 +35,16 @@
                             <h3 class="panel-title text-center"><i class="fa fa-sign-in"></i>  Student Login</h3>
                         </div>
                         <div class="panel-body">
+                            
                             <form method="post" action="<?=$_SERVER['PHP_SELF'];?>">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <div class="form-group">
+                                    <label>Email: <span class="text-danger">*</span></label>
                                     <input id="email" type="text" class="form-control" name="email" placeholder="Email">
                                 </div>
-                                <br>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <div class="form-group">
+                                    <label>Password: <span class="text-danger">*</span></label>
                                     <input id="password" type="password" class="form-control" name="password" placeholder="Password">
                                 </div>
-                               <br>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -56,27 +55,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-code"></i></span>
-                                    <input type="text" class="form-control" name="captcha-input" placeholder="Password">
+                                <div class="form-group">
+                                    <label>Captcha: <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="captcha-input">
                                 </div>
-                                <br>
+                                <input type="hidden" name="token" value="<?=$_SESSION["token"]?>">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </form> 
-                            <br>
-                            <?php
-                                if (isset($_POST['captcha-input'])) {
-                                    $captcha_input=clean_post_input($_POST['captcha-input']);
-                                    $isok = (Captcha::check($captcha_input)) ? TRUE : FALSE;
-                                    
-                                    if ($isok) {
-                                        echo "OK";
-                                    }
-                                    else{
-                                        echo "Captcha Error";
-                                    }
-                                }
-                            ?>
                         </div>
                     </div>
                 </div>
@@ -89,9 +74,8 @@
     <script src="<?=base_url('assets/js/jquery-1.10.2.js');?>"></script>
     <script src="<?=base_url('assets/js/bootstrap.js');?>"></script>
     <script type="application/javascript">
-
         var check = $("#check"),
-            errText = $("#error-text");
+        errText = $("#error-text");
 
         $("#refresh").on("click", function(ev) {
             ev.preventDefault();
