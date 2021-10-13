@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if (!isset($_SESSION['st_id'])) {
+        header("location:login.php");
+    }
     $_SESSION['token']=bin2hex(random_bytes(32));
     $_SESSION['token-expire']=time()+3600;
     include "include/functions.php";
@@ -71,7 +74,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Semester: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="<?=date("d/m/Y")?>">
+                                                <input type="text" class="form-control" disabled="disabled" value="">
                                             </div>
                                         </div>
                                     </div>

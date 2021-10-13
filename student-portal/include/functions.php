@@ -43,7 +43,6 @@
                             <span>'.$message.'</span>
                         </div>';
 				break;
-
 		}
 	}
 
