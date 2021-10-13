@@ -7,6 +7,7 @@
     $_SESSION['token-expire']=time()+3600;
     include "include/functions.php";
     require "include/Captcha.php";
+    require "include/config.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +25,9 @@
 
     <!-- Add custom CSS here -->
     <link rel="stylesheet" href="<?=base_url('assets/font-awesome/css/font-awesome.min.css');?>">
+
+    <!-- page based css -->
+    <link rel="stylesheet" href="<?=base_url('assets/css/bootstrap-datetimepicker.min.css');?>">
 </head>
 <body>
     <!-- navbar -->
@@ -52,31 +56,72 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Name: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="">
+                                            <div class="form-group date" >
+                                                <label>Date of Workshop: <span class="text-danger">*</span></label>
+                                                <input id="workshop-dt-picker" type="text" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Date: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="<?=date("d/m/Y")?>">
+                                                <label>Type of Workshop: <span class="text-danger">*</span></label>
+                                                <select name="" class="form-control" required="required">
+                                                    <option value="">--- Select Workshop Type ---</option>
+                                                    <?php 
+                                                        $sql="SELECT * FROM iitb_workshop_type";
+                                                        $query=mysqli_query($con,$sql);
+                                                        if ($query->num_rows>0) {
+                                                            while($result=mysqli_fetch_assoc($query)){
+                                                    ?>
+                                                            <option value="<?=$result['type_id']?>"><?=$result['type_name']?></option>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Participants: <span class="text-danger">*</span></label>
+                                                <select name="" class="form-control" required="required">
+                                                    <option value="">--- Select Participants ---</option>
+                                                    <?php 
+                                                        $sql="SELECT * FROM iitb_participants_type";
+                                                        $query=mysqli_query($con,$sql);
+                                                        if ($query->num_rows>0) {
+                                                            while($result=mysqli_fetch_assoc($query)){
+                                                    ?>
+                                                            <option value="<?=$result['type_id']?>"><?=$result['type_name']?></option>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Discipline: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Semester: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="">
+                                                <select name="d_id" class="form-control" required="required">
+                                                    <option value="">--- Select Discipline ---</option>
+                                                    <?php 
+                                                        $sql="SELECT * FROM iitb_discipline";
+                                                        $query=mysqli_query($con,$sql);
+                                                        if ($query->num_rows>0) {
+                                                            while($result=mysqli_fetch_assoc($query)){
+                                                    ?>
+                                                            <option value="<?=$result['d_id']?>"><?=$result['d_name']?></option>
+                                                    <?php
+                                                            }
+                                                        }
+                                                        mysqli_close($con);
+                                                    ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -84,30 +129,21 @@
                                 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="col-md-10">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Topic Attended: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" value="">
+                                                <label>Expected No. of Participants: <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" value="">
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>&nbsp;<span class="text-danger">&nbsp;</span></label>
-                                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add Topic</button>
+                                                <label>Workshop Category</label>
+                                                <input type="text" disabled="disabled" class="form-control" value="">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="row-fluid">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Your Feedback: <span class="text-danger">*</span></label>
-                                            <textarea name="" id="input" class="form-control" rows="3" required="required"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                
+                                                                
                                 <input type="hidden" name="token" value="<?=$_SESSION["token"]?>">
                                 <center><button name="btnStudentLogin" type="submit" class="btn btn-success">Submit</button>
                                 <button type="reset" class="btn btn-danger">Reset</button></center>
@@ -192,5 +228,17 @@
     <!-- JavaScript -->
     <script src="<?=base_url('assets/js/jquery-1.10.2.js');?>"></script>
     <script src="<?=base_url('assets/js/bootstrap.js');?>"></script>
+
+    <!-- page based js -->
+    <script src="<?=base_url('assets/js/moment.min.js');?>"></script>
+    <script src="<?=base_url('assets/js/bootstrap-datetimepicker.min.js');?>"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#workshop-dt-picker').datetimepicker({
+                minDate:new Date(),
+                format: 'DD/MM/YYYY'
+            });
+        });
+    </script>
 </body>
 </html>
