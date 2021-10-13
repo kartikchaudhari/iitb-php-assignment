@@ -31,7 +31,7 @@
         ?>
         <ul class="nav navbar-nav navbar-right navbar-user">
             <li class="dropdown user-dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?=$_SESSION['st_name']?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="<?=base_url('logout.php');?>"><i class="fa fa-power-off"></i> Log Out</a></li>
                 </ul>

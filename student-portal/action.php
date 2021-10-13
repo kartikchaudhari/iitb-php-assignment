@@ -57,6 +57,7 @@
                     $row = $query->fetch_assoc();
                     
                     $_SESSION['st_id']=$row['student_id'];
+                    $_SESSION['st_name']=$row['name'];
                     header("location:dashboard.php");
                 } 
                 else {
