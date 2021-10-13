@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    if (!isset($_SESSION['st_id'])) {
+    if (!isset($_SESSION['cr_id'])) {
         header("location:index.php");
     }
     $_SESSION['token']=bin2hex(random_bytes(32));
@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Student Feedback Portal :: Submit Feedback</title>
+    <title>Institute Workshop Coordinator Portal :: Coordinator Dashboard</title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?=base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
@@ -32,12 +32,14 @@
     
     <!-- page content-->
     <div class="container">
+
+        <!-- new work shop form -->
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title text-center"><i class="fa fa-plus"></i>  Submit Feedback</h3>
+                            <h3 class="panel-title text-center"><i class="fa fa-plus"></i>  Add New Workshop</h3>
                         </div>
                         <div class="panel-body">
                             <?php 
@@ -115,6 +117,75 @@
                 </div>
             </div>
         </div>
+        <!--./new work shop form-->
+
+        <!-- upcomming workshops -->
+        <div id="upcomming" class="row">
+            <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center"><i class="fa fa-list"></i> Upcomming Workshops</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Type &amp; Participants</th>
+                                        <th class="text-center">Expected No. of participants &amp; Category</th>
+                                        <th class="text-center">Disciplines</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--./upcomming workshops-->
+
+        <!-- pending workshops -->
+        <div id="pending" class="row">
+            <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center"><i class="fa fa-list"></i> Pending Workshops</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Type &amp; Participants</th>
+                                        <th class="text-center">No. of participants &amp; Category</th>
+                                        <th class="text-center">Reports</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--./pending workshops-->
     </div>
     <!--./page content-->
 

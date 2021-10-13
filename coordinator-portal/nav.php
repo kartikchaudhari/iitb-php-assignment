@@ -6,32 +6,31 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?=base_url("index.php");?>">Student Feedback Portal</a>
+        <a class="navbar-brand" href="<?=base_url("index.php");?>">Institute Workshop Coordinator Portal</a>
     </div>
 
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
             <?php 
-                if (!isset($_SESSION['st_id'])) {
+                if (!isset($_SESSION['cr_id'])) {
             ?>
-            <li><a href="<?=base_url('register.php');?>"><i class="fa fa-plus"></i> Registration</a></li>
             <li><a href="<?=base_url('index.php');?>"><i class="fa fa-sign-in"></i> Login</a></li>
             <?php
                 }
                 else{
             ?>
-            <li><a href="<?=base_url('dashboard.php');?>"><i class="fa fa-plus"></i> Submit Feedback</a></li>
+            <li><a href="<?=base_url('dashboard.php');?>"><i class="fa fa-plus"></i> Add New Workshop</a></li>            
             <?php
                 }
             ?>
         </ul>
         
         <?php 
-            if (isset($_SESSION['st_id'])) {
+            if (isset($_SESSION['cr_id'])) {
         ?>
         <ul class="nav navbar-nav navbar-right navbar-user">
             <li class="dropdown user-dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?=$_SESSION['cr_name']?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="<?=base_url('logout.php');?>"><i class="fa fa-power-off"></i> Log Out</a></li>
                 </ul>

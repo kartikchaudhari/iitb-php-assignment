@@ -23,7 +23,7 @@
                 
                 if($stmt->execute()){
                     $_SESSION['message']=alert('s',"You are successfully registered, Please login to Access your dashboard.");
-                    header("location:login.php");
+                    header("location:index.php");
                 }
             }
             else{
@@ -62,20 +62,20 @@
                 else {
                     $message="Invalid Credentials, Please Retry.";
                     $_SESSION['message']=alert('e',$message);
-                    header("location:login.php");
+                    header("location:index.php");
                 }
                 
             }
             else{
                 $message="Captcha Mismatched, Please Retry.";
                 $_SESSION['message']=alert('e',$message);
-                header("location:login.php");
+                header("location:index.php");
             }            
         } 
         else{
             $message="CSRF Token Mismatched.";
             $_SESSION['message']=alert('e',$message);
-            header("location:login.php");
+            header("location:index.php");
         }
     }
 ?>
