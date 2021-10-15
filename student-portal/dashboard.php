@@ -6,7 +6,13 @@
     $_SESSION['token']=bin2hex(random_bytes(32));
     $_SESSION['token-expire']=time()+3600;
     include "include/functions.php";
-    require "include/Captcha.php";
+    require "include/config.php";
+
+    $sql="SELECT * FROM iitb_student WHERE student_id=".$_SESSION['st_id'];
+    $query=mysqli_query($con,$sql);
+    if ($query->num_rows>0) {
+        $student_info=mysqli_fetch_assoc($query);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,13 +52,14 @@
                                     unset($_SESSION['message']);
                                 }
                             ?>
+
                             <form method="post" action="<?=base_url('action.php');?>">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Name: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="">
+                                                <input type="text" class="form-control" disabled="disabled" value="<?=strtoupper($student_info['name'])?>">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -68,13 +75,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Discipline: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="">
+                                                <input type="text" class="form-control" disabled="disabled" value="<?=get_course_name($student_info['course'])?>">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Semester: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" disabled="disabled" value="">
+                                                <input type="text" class="form-control" disabled="disabled" value="<?=$student_info['semester'];?>">
                                             </div>
                                         </div>
                                     </div>
@@ -83,15 +90,15 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-md-10">
-                                            <div class="form-group">
+                                            <div id="topic" class="form-group">
                                                 <label>Topic Attended: <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" value="">
+                                                <input type="text" class="form-control" required="required" name="topic[]">
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label>&nbsp;<span class="text-danger">&nbsp;</span></label>
-                                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add Topic</button>
+                                                <button type="button" onclick="addMore();" class="btn btn-success"><i class="fa fa-plus"></i> Add Topic</button>
                                             </div>
                                         </div>
                                     </div>
@@ -101,13 +108,12 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Your Feedback: <span class="text-danger">*</span></label>
-                                            <textarea name="" id="input" class="form-control" rows="3" required="required"></textarea>
+                                            <textarea name="feedback" class="form-control" rows="3" required="required"></textarea>
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <input type="hidden" name="token" value="<?=$_SESSION["token"]?>">
-                                <center><button name="btnStudentLogin" type="submit" class="btn btn-success">Submit</button>
+                                <center><button name="btnSubmitFeedback" type="submit" class="btn btn-success">Submit Feedback</button>
                                 <button type="reset" class="btn btn-danger">Reset</button></center>
                             </form> 
                         </div>
@@ -121,5 +127,10 @@
     <!-- JavaScript -->
     <script src="<?=base_url('assets/js/jquery-1.10.2.js');?>"></script>
     <script src="<?=base_url('assets/js/bootstrap.js');?>"></script>
+    <script type="text/javascript">
+        function addMore() {
+            $("#topic").append("<input type='text' style='margin-top:5px;' required='required' class='form-control' name='topic[]''>");
+        }
+    </script>
 </body>
 </html>

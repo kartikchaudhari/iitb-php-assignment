@@ -46,5 +46,14 @@
 		}
 	}
 
+	function get_course_name($c_id){
+		require "config.php";
+	    $sql="SELECT * FROM iitb_discipline WHERE d_id=$c_id";
+	    $query=mysqli_query($con,$sql);
+	    if ($query->num_rows>0) {
+	    	$result=mysqli_fetch_assoc($query);
+	    	return $result['d_name'];
+	    }
+	}
 	
 ?>
