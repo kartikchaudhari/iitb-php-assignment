@@ -1,5 +1,4 @@
 <?php
-    defined('BASEPATH') OR exit('You are not allowed to Access this Section.');
     session_start();
     include "include/functions.php";
     require "include/Captcha.php";
@@ -78,5 +77,10 @@
             $_SESSION['message']=alert('e',$message);
             header("location:index.php");
         }
+    }
+
+
+    if (isset($_POST['btnUploadReport'])) {
+        
     }
 ?>

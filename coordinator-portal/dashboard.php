@@ -189,7 +189,7 @@
                                             while($result=mysqli_fetch_assoc($query)){
                                     ?>
                                         <tr>
-                                            <td class="text-center"><?=$result['workshop_date']?></td>
+                                            <td class="text-center"><?=pretty_date($result['workshop_date']);?></td>
                                             <td class="text-center"><?=get_workshop_type($result['workshop_type'])." | ".get_participant_type($result['participant_type'])?></td>
                                             <td class="text-center"><?=$result['participant_expacted']." | ".$result['workshop_category']?></td>
                                             <td class="text-center"><?php get_courses($result['discipline_type']);?></td>
@@ -236,17 +236,19 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                        $sql="SELECT * FROM iitb_workshop WHERE workshop_date<'".date("Y-m-d")."' AND workshop_status=1";
+                                        $sql="SELECT * FROM iitb_workshop WHERE workshop_date<='".date("Y-m-d")."' AND workshop_status=1";
                                         
                                         $query=mysqli_query($con,$sql);
                                         if ($query->num_rows>0) {
                                             while($result=mysqli_fetch_assoc($query)){
                                     ?>
                                         <tr>
-                                            <td class="text-center"><?=$result['workshop_date']?></td>
+                                            <td class="text-center"><?=pretty_date($result['workshop_date'])?></td>
                                             <td class="text-center"><?=get_workshop_type($result['workshop_type'])." | ".get_participant_type($result['participant_type'])?></td>
-                                            <td class="text-center"><?=$result['participant_expacted']." | ".$result['workshop_category']?></td>
-                                            <td class="text-center"><?php get_courses($result['discipline_type']);?></td>
+                                            <td class="text-center"><?=count_participants_category($result['workshop_date']);?></td>
+                                            <td class="text-center">
+                                                <a href="<?=base_url('monthly-report.php');?>" target="_blank"><button type="button" class="btn btn-info btn-sm">Upload Reports</button></a>
+                                            </td>
                                         </tr>
                                     <?php
                                             }
@@ -297,7 +299,7 @@
                         $("#message").css("display","none");
                         $("#workshop-cat").val("Mini-workshop");
                     }
-                    else if(participants<=51){
+                    else if(participants>=51 && participants<=100){
                         $("#message").addClass("text-danger");
                         $("#message").html("Invalid Numbers of User entered.");
                         $("#expected-participants").focus();

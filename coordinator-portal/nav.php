@@ -19,7 +19,8 @@
                 }
                 else{
             ?>
-            <li><a href="<?=base_url('dashboard.php');?>"><i class="fa fa-plus"></i> Add New Workshop</a></li>            
+            <li><a href="<?=base_url('dashboard.php');?>"><i class="fa fa-plus"></i> Add New Workshop</a></li> 
+            <li><a href="<?=base_url('monthly-report.php');?>"><i class="fa fa-upload"></i> Upload Monthly Report</a></li>              
             <?php
                 }
             ?>
