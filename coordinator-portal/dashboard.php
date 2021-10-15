@@ -182,7 +182,7 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                        $sql="SELECT * FROM iitb_workshop WHERE workshop_date>'".date("Y-m-d")."'";
+                                        $sql="SELECT * FROM iitb_workshop WHERE DATE(workshop_date) > '".date("Y-m-d")."' ORDER BY DATE(workshop_date) ASC";
                                         
                                         $query=mysqli_query($con,$sql);
                                         if ($query->num_rows>0) {
@@ -236,7 +236,7 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                        $sql="SELECT * FROM iitb_workshop WHERE workshop_date<='".date("Y-m-d")."' AND workshop_status=1";
+                                        $sql="SELECT * FROM iitb_workshop WHERE DATE(workshop_date)<='".date("Y-m-d")."' AND workshop_status=1 ORDER BY DATE(workshop_date) ASC";
                                         
                                         $query=mysqli_query($con,$sql);
                                         if ($query->num_rows>0) {
@@ -247,7 +247,14 @@
                                             <td class="text-center"><?=get_workshop_type($result['workshop_type'])." | ".get_participant_type($result['participant_type'])?></td>
                                             <td class="text-center"><?=count_participants_category($result['workshop_date']);?></td>
                                             <td class="text-center">
+                                                <?php 
+                                                    if(date('m', strtotime($result['workshop_date']))!=date("m")){
+                                                ?>
                                                 <a href="<?=base_url('monthly-report.php');?>" target="_blank"><button type="button" class="btn btn-info btn-sm">Upload Reports</button></a>
+                                                <?php
+                                                    }
+                                                ?>
+                                                
                                             </td>
                                         </tr>
                                     <?php

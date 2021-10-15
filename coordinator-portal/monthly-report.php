@@ -48,7 +48,7 @@
                                     unset($_SESSION['message']);
                                 }
                             ?>
-                            <form method="post" action="<?=base_url('action.php');?>">
+                            <form method="post" action="<?=base_url('action.php');?>" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-3">
                                         <div class="form-group">
@@ -83,7 +83,7 @@
                                                 2. File must be in PDF (<code><i>.pdf</i></code>) format.
                                             </span>
                                             <br>
-                                            <input type="file" name="report" class="form-control" accept="application/pdf" required="required">
+                                            <input type="file" name="report-file" class="form-control" accept="application/pdf" required="required">
                                         </div>
                                     </div>
                                 </div>

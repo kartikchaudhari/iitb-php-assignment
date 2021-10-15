@@ -81,6 +81,75 @@
 
 
     if (isset($_POST['btnUploadReport'])) {
-        
+
+        //check csrf token
+        if(hash_equals($_SESSION['token'], $_POST['token'])) {
+           
+            $new_name=num_to_month(clean_post_input($_POST['m_id']))."-".date("Y")."-".strtotime("now");
+
+            $target_dir = "reports/";
+            $target_file = $target_dir .basename($_FILES["report-file"]["name"]);
+            $uploadOk = 1;
+            $file_extension = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+            $error="";
+            // Check file size
+            if ($_FILES["report-file"]["size"] > 500000) {
+                $error.="<li>Sorry, your file is too large.</li>";
+                $uploadOk = 0;
+            }
+
+            // Allow certain file formats
+            if($file_extension != "pdf" && $file_extension != "PDF") {
+                $error.="<li>Sorry, only PDF files are allowed.</li>";
+                $uploadOk = 0;
+            }
+
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                $error.="<li>Sorry, your file was not uploaded.</li>";
+                $_SESSION['message']=alert('e',$error);
+                header("location:monthly-report.php");
+                
+            } 
+            else {
+                // if everything is ok, try to upload file
+                $new_file_path=$target_dir.$new_name.".".$file_extension;
+
+                if (move_uploaded_file($_FILES["report-file"]["tmp_name"],$new_file_path)) {
+                    $month_id=$_POST['m_id'];
+                    //insert info to db
+                    $stmt = $con->prepare("INSERT INTO iitb_reports (month,report_file) VALUES (?,?)");
+                    $stmt->bind_param("is",$month_id,$new_file_path);
+                    
+                    if($stmt->execute()){
+
+                        //update workshop table
+                        $sql="UPDATE iitb_workshop SET workshop_status=2 WHERE MONTH(workshop_date)=$month_id";
+
+                        if ($con->query($sql) === TRUE) {
+                            $_SESSION['message']=alert('s',"Report File Uploaded Successfully.");
+                            header("location:monthly-report.php");
+                        } else {
+                          echo "Error updating record: " . $conn->error;
+                        }
+                    }
+                    else{
+                        $_SESSION['message']=alert('e',"An Error Occured While Adding Workshop.");
+                        header("location:monthly-report.php");
+                    }
+                } 
+                else {
+                    $error.="<li>Sorry, there was an error uploading your file.</li>";
+                    $_SESSION['message']=alert('e',$error);
+                    header("location:monthly-report.php");
+                }
+            }                         
+        } 
+        else{
+            $message="CSRF Token Mismatched.";
+            $_SESSION['message']=alert('e',$message);
+            header("location:monthly-report.php");
+        }
     }
 ?>
