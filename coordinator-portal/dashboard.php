@@ -6,7 +6,6 @@
     $_SESSION['token']=bin2hex(random_bytes(32));
     $_SESSION['token-expire']=time()+3600;
     include "include/functions.php";
-    require "include/Captcha.php";
     require "include/config.php";
 ?>
 <!DOCTYPE html>
@@ -28,6 +27,7 @@
 
     <!-- page based css -->
     <link rel="stylesheet" href="<?=base_url('assets/css/bootstrap-datetimepicker.min.css');?>">
+    <link rel="stylesheet" href="<?=base_url('assets/css/bootstrap-multiselect.css');?>"/>
 </head>
 <body>
     <!-- navbar -->
@@ -55,16 +55,24 @@
                             <form method="post" action="<?=base_url('action.php');?>">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <div class="form-group date" >
+                                                <label>Workshop Title: <span class="text-danger">*</span></label>
+                                                <input name="w_title" type="text" class="form-control" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="col-md-6">
                                             <div class="form-group date" >
                                                 <label>Date of Workshop: <span class="text-danger">*</span></label>
-                                                <input id="workshop-dt-picker" type="text" class="form-control">
+                                                <input name="w_date" id="workshop-dt-picker" type="text" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Type of Workshop: <span class="text-danger">*</span></label>
-                                                <select name="" class="form-control" required="required">
+                                                <select name="w_type_id" class="form-control" required="required">
                                                     <option value="">--- Select Workshop Type ---</option>
                                                     <?php 
                                                         $sql="SELECT * FROM iitb_workshop_type";
@@ -88,7 +96,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Participants: <span class="text-danger">*</span></label>
-                                                <select name="" class="form-control" required="required">
+                                                <select name="participants_id" class="form-control" required="required">
                                                     <option value="">--- Select Participants ---</option>
                                                     <?php 
                                                         $sql="SELECT * FROM iitb_participants_type";
@@ -107,8 +115,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Discipline: <span class="text-danger">*</span></label>
-                                                <select name="d_id" class="form-control" required="required">
-                                                    <option value="">--- Select Discipline ---</option>
+                                                <select id="d_id" class="form-control" multiple="multiple" required="required">
                                                     <?php 
                                                         $sql="SELECT * FROM iitb_discipline";
                                                         $query=mysqli_query($con,$sql);
@@ -119,7 +126,6 @@
                                                     <?php
                                                             }
                                                         }
-                                                        mysqli_close($con);
                                                     ?>
                                                 </select>
                                             </div>
@@ -132,20 +138,21 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Expected No. of Participants: <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" value="">
+                                                <input name="participant_expacted" id="expected-participants" type="number" class="form-control" value="">
+                                                <span id="message"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Workshop Category</label>
-                                                <input type="text" disabled="disabled" class="form-control" value="">
+                                                <input name="w_category" id="workshop-cat" type="text" readonly="readonly" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                                                 
                                 <input type="hidden" name="token" value="<?=$_SESSION["token"]?>">
-                                <center><button name="btnStudentLogin" type="submit" class="btn btn-success">Submit</button>
+                                <center><button name="btnAddWorkshop" type="submit" class="btn btn-success">Submit</button>
                                 <button type="reset" class="btn btn-danger">Reset</button></center>
                             </form> 
                         </div>
@@ -174,12 +181,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    <?php 
+                                        $sql="SELECT * FROM iitb_workshop WHERE workshop_date>'".date("Y-m-d")."'";
+                                        
+                                        $query=mysqli_query($con,$sql);
+                                        if ($query->num_rows>0) {
+                                            while($result=mysqli_fetch_assoc($query)){
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?=$result['workshop_date']?></td>
+                                            <td class="text-center"><?=get_workshop_type($result['workshop_type'])." | ".get_participant_type($result['participant_type'])?></td>
+                                            <td class="text-center"><?=$result['participant_expacted']." | ".$result['workshop_category']?></td>
+                                            <td class="text-center"><?php get_courses($result['discipline_type']);?></td>
+                                        </tr>
+                                    <?php
+                                            }
+                                        }
+                                        else{
+                                    ?>
+                                        <tr>
+                                            <td colspan="4">
+                                                <h3 class="text-center">No Upcomming Workshops</h3>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -208,12 +235,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    <?php 
+                                        $sql="SELECT * FROM iitb_workshop WHERE workshop_date<'".date("Y-m-d")."' AND workshop_status=1";
+                                        
+                                        $query=mysqli_query($con,$sql);
+                                        if ($query->num_rows>0) {
+                                            while($result=mysqli_fetch_assoc($query)){
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?=$result['workshop_date']?></td>
+                                            <td class="text-center"><?=get_workshop_type($result['workshop_type'])." | ".get_participant_type($result['participant_type'])?></td>
+                                            <td class="text-center"><?=$result['participant_expacted']." | ".$result['workshop_category']?></td>
+                                            <td class="text-center"><?php get_courses($result['discipline_type']);?></td>
+                                        </tr>
+                                    <?php
+                                            }
+                                        }
+                                        else{
+                                    ?>
+                                        <tr>
+                                            <td colspan="4">
+                                                <h3 class="text-center">No Pending Workshops</h3>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -237,6 +284,37 @@
             $('#workshop-dt-picker').datetimepicker({
                 minDate:new Date(),
                 format: 'DD/MM/YYYY'
+            });
+
+            $("#expected-participants").change(function(){
+                var participants=$("#expected-participants").val();
+                if (participants!="" || participants>0) {
+                    if (participants>=101) {
+                        $("#message").css("display","none");
+                        $("#workshop-cat").val("Workshop");
+                    }
+                    else if(participants>=51){
+                        $("#message").css("display","none");
+                        $("#workshop-cat").val("Mini-workshop");
+                    }
+                    else if(participants<=51){
+                        $("#message").addClass("text-danger");
+                        $("#message").html("Invalid Numbers of User entered.");
+                        $("#expected-participants").focus();
+                    }
+                    else{
+                    }
+                }
+            }); 
+        });
+    </script>
+    <script type="text/javascript" src="<?=base_url('assets/js/bootstrap-multiselect.js');?>"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#d_id').multiselect({
+                checkboxName: function(option) {
+                    return 'd_id[]';
+                }
             });
         });
     </script>

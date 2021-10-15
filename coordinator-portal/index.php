@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if (isset($_SESSION['cr_id'])) {
+        header("location:dashboard.php");
+    }
     $_SESSION['token']=bin2hex(random_bytes(32));
     $_SESSION['token-expire']=time()+3600;
     include "include/functions.php";
