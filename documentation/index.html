@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head lang="en">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Institute Workshop Coordinator and Student Feedback Portal Documentation &dash; Kartik Chaudhari</title>
+	<!-- Framework CSS -->
+	<link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+	<style type="text/css" media="screen">
+		p, table, hr, .box { margin-bottom:25px; }
+		.box p { margin-bottom:10px; }
+	</style>
+</head>
+
+
+<body>
+	<div class="container">
+	
+		<h3 class="center alt">&ldquo;Institute Workshop Coordinator &amp; Student Feedback Portal&rdquo; Documentation by &ldquo;<a href="mailto:kartikchaudhari456@gmail.com">Kartik Chaudhari</a>&rdquo;</h3>
+		<hr>		
+		<h1 class="center">&ldquo;Institute Workshop Coordinator &amp; Student Feedback Portal&rdquo;</h1>
+		
+		<div class="borderTop">
+			<div class="span-7 colborder info prepend-1">
+				<p class="prepend-top">
+					<strong>
+					Created: 16/10/2021<br>
+					By: Kartik Chaudhari<br>
+					Email: <a href="mailto:kartikchaudhari456@gmail.com">kartikchaudhari456@gmail.com</a>
+					</strong>
+				</p>
+			</div><!-- end div .span-6 -->		
+	
+			<div class="last">
+				<p class="prepend-top append-0">This is a documentation for Both Institute Workshop Coordinator Portal and Student Feedback Portal.</p>
+			</div>
+		</div><!-- end div .borderTop -->
+		
+		<hr>
+		
+		<!-- toc -->
+		<h2 id="toc" class="alt">Table of Contents</h2>
+		<ol class="alpha">
+			<li><a href="#getting_started">Getting Started</a></li>
+			<li><a href="#db_setup">Database Setup</a></li>
+			<li><a href="#config">Configuration</a></li>
+			<li>
+				Using Institute Workshop Coordinator Portal
+				<ol>
+					<li><a href="#wc_login">Login to Account</a></li>
+					<li><a href="#wc_add_workshop">Add New Workshop</a></li>
+					<li><a href="#wc_view_upcomming_pending">View Upcomming and Pending Workshops</a></li>
+					<li><a href="#wc_upload_report">Upload Monthly Report</a></li>
+					<li><a href="#wc_logout">Logout from Account</a></li>
+				</ol>
+			</li>
+			<li>
+				Using Student Feedback Portal
+				<ol>
+					<li><a href="#st_reg">Register a Student</a></li>
+					<li><a href="#st_login">Login to Account</a></li>
+					<li><a href="#st_submit_feedback">Submit a Feedback</a></li>
+					<li><a href="#st_logout">Logout from Account</a></li>
+				</ol>
+			</li>
+		</ol>
+		<!--./toc-->
+		<hr>
+		
+
+		<h3 id="getting_started"><strong>A) Getting Started</strong> - <a href="#toc">top</a></h3>
+		<p>Extact the zip file to <code>htdocs</code> directory using any zip extraction program (Ex. 7zip).
+		</p>		
+		<img src="assets/images/get-started.png" alt="Extract Zip File" />
+		<br><br>
+		<strong><u>Directory Structure</u></strong>
+		<br>
+		<img src="assets/images/directory-structure.png" alt="Directory Structure">
+		<p>
+			<strong>coordinator-portal</strong>: it is seperate web application directory. contains all the neccessary css, javascript, images and php files required for Institute Workshop Coordinator Portal.
+			<br><br>
+			<strong>student-portal</strong>: it is seperate web application directory. contains all the neccessary css, javascript, images and php files required for Student Feedback Portal.
+			<br><br>
+			<strong>database</strong>: it contains the database <code>.sql</code> file, required to setup database for both web applications.
+			
+		</p>
+
+		<hr>
+
+		<h3 id="db_setup"><strong>B) Database Setup</strong> - <a href="#toc">top</a></h3>
+		<p>Following are the for Database Setup.</p>
+			<ol>
+				<li>open phpmyadmin (if we are using XAMPP/LAMP follow this url <a href="http://localhost/phpmyadmin/index.php">http://localhost/phpmyadmin/index.php</a>.</li>
+				<li>Click on <strong>databases</strong> tab, enter <strong>database name</strong> and press <strong>Create</strong> button.
+					<img src="assets/images/create-database.png" alt="Create Database">
+				</li>
+				<br>
+				<li>Click on recently created database from database list (shown in above step).</li>
+				<li>You will redirected to database operation page, from operation strip, click on <strong>Import</strong> tab.
+					<img src="assets/images/import-tab.png" alt="Import Tab">
+				</li>
+				<br>
+				<li>It will open file import wizard.</li>
+				<li>Now navigate to extracted zip file, in that open <strong>database</strong> directory.</li>
+				<li>you will find a database SQL file, we need to create zip file of it.</li>
+				<li>Now returned to file import wizard, browse that zip file and press <strong>Go</strong> button.</li>
+				<li>After sucessfully import, click on <strong>Structure</strong> tab from operation strip.</li>
+				<li>We will have list of tables as shown in below figure.
+					<img src="assets/images/tables-list.png">
+				</li>
+			</ol>
+			<p>Database is setup successfully.</p> 
+
+		<hr>
+		
+		<h3 id="config"><strong>C) Configuration</strong> - <a href="#toc">top</a></h3>
+		
+		<p>Both the web application have their seperate configuration files, so if we install them on different domain, they will work as expected.</p>
+		<p>While both the web application are dependent on each other, they use same and common database.</p>
+		<p>Following are the Steps to configure each web applicaion:</p>
+		<strong><u>Configuration of Institute Workshop Coordinator Portal</u></strong>
+		<ol>
+			<li>Navigate to <code><i>coodinator-portal/include</i></code> directory.</li>
+			<li>From list of file edit <code><i>config.php</i></code> file using any text editor.
+				<img src="assets/images/coordinator-config.png" alt="Coordinator Configuration">
+				<p>
+					<strong><u>Variable Description</u></strong><br>
+					<strong><code>$user </code>:</strong> Stores the username of database user.<br>
+					<strong><code>$password </code>:</strong> Stores the password of database user.<br>
+					<strong><code>$host </code>:</strong> Stores the hostname of database server.<br>
+					<strong><code>$db </code>:</strong> Stores the name of database (database created in <a href="#db_setup">Database Setup</a> step.)<br>
+					<strong><code>$base_url </code>:</strong> Stores the the absoule URL, where <code>php, html, css, js and image</code> files of Institute Workshop Coordinator Portal are stored.<br><br>
+					<strong>Note:</strong> <span>These variables are very important to run web application smoothly.</span>
+				</p>
+			</li>
+		</ol>
+		<br>
+		<strong><u>Configuration of Student Feedback Portal</u></strong>
+		<ol>
+			<li>Navigate to <code><i>coodinator-portal/include</i></code> directory.</li>
+			<li>From list of file edit <code><i>config.php</i></code> file using any text editor.
+				<img src="assets/images/student-config.png" alt="Coordinator Configuration">
+				<p>
+					<strong><u>Variable Description</u></strong><br>
+					<strong><code>$user </code>:</strong> Stores the username of database user.<br>
+					<strong><code>$password </code>:</strong> Stores the password of database user.<br>
+					<strong><code>$host </code>:</strong> Stores the hostname of database server.<br>
+					<strong><code>$db </code>:</strong> Stores the name of database (database created in <a href="#db_setup">Database Setup</a> step.)<br>
+					<strong><code>$base_url </code>:</strong> Stores the the absoule URL, where <code>php, html, css, js and image</code> files of Student Feedback Portal are stored.<br><br>
+					<strong>Note:</strong> <span>These variables are very important to run web application smoothly.</span>
+				</p>
+			</li>
+		</ol>
+		<p>Both the web application are configured successfully.</p>		
+		<hr>
+		<h3><strong>D) Using Institute Workshop Coordinator Portal</strong> - <a href="#toc">top</a></h3>
+		<ol>
+			<li id="wc_login"><strong>Login to Account</strong></li>
+			<p>
+				1.1. Click on <strong>Institute Workshop Coordinator Portal</strong> button, it will redirect to login page of coordinator.
+				<br>
+				<center><img src="assets/images/common-index.png" style="width: 80%;"></center>
+				<br>
+				1.2. Use following credentials to access coordinator dashboard.
+				<ul style="list-style: none;">
+					<li><strong>email: </strong>coordinator@gmail.com</li>
+					<li><strong>passsword: </strong>admin</li>
+				</ul>
+				<center><img src="assets/images/coordinator-portal/1.png" style="width: 50%;"></center>
+			</p>
+			<li id="wc_add_workshop"><strong>Add New Workshop</strong></li>
+			<p>
+				2.1 fill up the details and press <strong>Submit</strong> button.
+				<center><img src="assets/images/coordinator-portal/2.png" style="width: 80%;"></center>
+			</p>
+			<li id="wc_view_upcomming_pending"><strong>View Upcomming and Pending Workshops</strong></li>
+			<p>
+				3.1 If we scroll page down, we will see <strong>Upcomming and Pending Workshops</strong> table.
+				<center><img src="assets/images/coordinator-portal/3.png" style="width: 80%;"></center>
+			</p>
+			<li id="wc_upload_report"><strong>Upload Monthly Report</strong></li>
+			<p>
+				4.1 Click on <strong>Upload Monthly Report</strong> tab from top navbar, it will redirect to Monthly Report page.
+				<center><img src="assets/images/coordinator-portal/4.png" style="width: 80%;"></center>
+				<br>
+				4.2 Select <strong>Month</strong> from dropdown list, then browse for PDF file and press Submit button, it will upload monthly report.
+				<center><img src="assets/images/coordinator-portal/5.png" style="width: 80%;"></center>
+			</p>
+			<li id="wc_logout"><strong>Logout from Account</strong></li>
+			<p>
+				5.1 Click on <strong>COORDINATOR_NAME</strong>, and Click on <strong>Logout</strong>.
+				<center><img src="assets/images/coordinator-portal/6.png"></center>
+			</p>
+		</ol>
+		<hr>
+		<h3><strong>E) Using Student Feedback Portal</strong> - <a href="#toc">top</a></h3>
+		<ol>
+			<li id="st_reg">Register a Student</li>
+			<p>
+				1.1 fill up the details and press <strong>Register</strong> button.
+				<center><img src="assets/images/feedback-portal/1.jpg" style="width: 60%;"></center>
+			</p>
+			<li id="st_login">Login to Account</li>
+			<p>
+				<ul style="list-style: none;">
+					<li><strong>email: </strong>student@gmail.com</li>
+					<li><strong>passsword: </strong>student</li>
+				</ul>
+				<center><img src="assets/images/feedback-portal/2.png" style="width: 50%;"></center>
+			</p>
+			<li id="st_submit_feedback">Submit a Feedback</li>
+			<p>
+				3.1 fill up the details and press <strong>Submit Feedback</strong> button.
+				<center><img src="assets/images/feedback-portal/3.png" style="width: 80%;"></center>
+			</p>
+			<li id="st_logout">Logout from Account</li>
+			<p>
+				4.1 Click on <strong>STUDENT_NAME</strong>, and Click on <strong>Logout</strong>.
+				<center><img src="assets/images/feedback-portal/4.png"></center>
+			</p>
+		</ol>
+		<p><a href="#toc">Go To Table of Contents</a></p>
+		
+		<hr class="space">
+	</div><!-- end div .container -->
+</body>
+</html>
