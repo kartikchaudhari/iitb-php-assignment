@@ -1,13 +1,21 @@
 <?php 
 	/*
 		provide web path to access aseets
+
+		@param string $str stores url string
+		@return string returns the full accessible url
 	*/
 	function base_url($str){
 		require "config.php";
 		return $base_url.$str;
 	}
 
-	/* Clean up any data */
+	/*
+		cleans the $_POST data
+
+		$param string $_POST data
+		$return string return cleaned string data
+	*/
     function clean_post_input($data) {
         /* trim whitespace */
         $data = trim($data);
